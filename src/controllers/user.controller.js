@@ -102,6 +102,9 @@ const Loginuser = asynchandler(async (req, res) => {
    }
 
 })
+const healthy = asynchandler(async (req, res) => {
+   return res.status(200).send("API is healthy");
+})
 const Logout = asynchandler(async (req, res) => {
    const user = req.user;
    if (!user) {
@@ -182,4 +185,4 @@ const getUserProfile=asynchandler(async(req,res)=>{
       console.log("fetching user profile at backend"+err);
    }
 })
-export { registerUser, Loginuser, Logout, UpdateProfile,DisplayList,getUserProfile }
+export { registerUser, Loginuser, Logout, UpdateProfile,DisplayList,getUserProfile,healthy }

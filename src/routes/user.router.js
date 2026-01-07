@@ -1,8 +1,9 @@
 import express from "express";
-import { registerUser ,Loginuser,Logout,UpdateProfile,DisplayList,getUserProfile} from "../controllers/user.controller.js";
+import { registerUser ,Loginuser,Logout,UpdateProfile,DisplayList,getUserProfile,healthy} from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { VerifyJwt } from "../middlewares/auth.middleware.js";
 const userRouter = express.Router();
+userRouter.route('/').get(healthy);
 userRouter.route('/register').post(upload.fields([
     {
         name:"avatar",
