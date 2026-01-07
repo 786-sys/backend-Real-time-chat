@@ -16,7 +16,10 @@ const server = http.createServer(app);
 // 🔹 Attach socket.io
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // frontend
+    origin: [
+        "http://localhost:5173",                 // local frontend
+        "https://frontend-real-time-chat.onrender.com" // deployed frontend
+    ], // frontend
     methods: ["GET", "POST"],
     credentials: true,
   },
