@@ -12,15 +12,12 @@ app.use(cors({
         "https://frontend-real-time-chat.onrender.com" // deployed frontend
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-
     credentials: true
 }));
 app.use(express.json({ limit: "64kb" }));
 app.use(express.urlencoded({ extended: true, limit: "64kb" }));
 app.use(express.static("public"));
 app.use(cookieparser());
-
-
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/message', messageRouter);
 

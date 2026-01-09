@@ -20,7 +20,7 @@ const io = new Server(server, {
         "http://localhost:5173",                 // local frontend
         "https://frontend-real-time-chat.onrender.com" // deployed frontend
     ], // frontend
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PUT","DELETE"],
     credentials: true,
   },
 });
@@ -130,7 +130,7 @@ io.on("connection", (socket) => {
 ConnectDB()
   .then(() => {
     server.listen(process.env.PORT, () => {
-      console.log(`⚙️ Server running at port: ${process.env.PORT}`);
+      console.log(`⚙️ Server running at port: ${process.env.PORT || 5000}`);
     });
   })
   .catch((err) => {
