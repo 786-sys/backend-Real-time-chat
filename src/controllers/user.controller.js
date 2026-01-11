@@ -89,7 +89,7 @@ const Loginuser = asynchandler(async (req, res) => {
          secure: true
       }
       const senduser = await usermodel.findById(existuser?._id).select("-password -refereshToken");
-      await sendLoginEmail(existuser.email);
+      // await sendLoginEmail(existuser.email);
       console.log(accessToken, refreshToken);
       return res.status(200)
          .cookie("refreshToken", refreshToken, options)
