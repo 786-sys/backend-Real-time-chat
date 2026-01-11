@@ -86,6 +86,7 @@ const Loginuser = asynchandler(async (req, res) => {
       const { accessToken, refreshToken } = await generateRefreshAccessToken(existuser._id);
       const options = {
          httpOnly: true,
+         sameSite: "none", 
          secure: true
       }
       const senduser = await usermodel.findById(existuser?._id).select("-password -refereshToken");
@@ -120,6 +121,7 @@ const Logout = asynchandler(async (req, res) => {
    const options = {
       httpOnly: true,
       secure: true,
+      sameSite: "none"
    }
    return res.status(200)
       .clearCookie("accessToken", options)
