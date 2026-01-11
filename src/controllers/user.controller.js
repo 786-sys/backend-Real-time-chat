@@ -90,7 +90,7 @@ const Loginuser = asynchandler(async (req, res) => {
       }
       const senduser = await usermodel.findById(existuser?._id).select("-password -refereshToken");
       // await sendLoginEmail(existuser.email);
-      console.log(accessToken, refreshToken);
+      console.log("access and refresh "+accessToken, refreshToken);
       return res.status(200)
          .cookie("refreshToken", refreshToken, options)
          .cookie("accessToken", accessToken, options)
@@ -111,6 +111,7 @@ const Logout = asynchandler(async (req, res) => {
    if (!user) {
       return res.status(401).json({ message: "Unauthorized user in logout" })
    }
+   console.log(user.refreshToken);
    await usermodel.findByIdAndUpdate(user?._id, {
       $set: {
          refreshToken: undefined
