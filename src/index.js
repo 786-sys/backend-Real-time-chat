@@ -62,13 +62,13 @@ io.on("connection", (socket) => {
       console.log(
         `📩 Message from ${senderId} to ${receiverId}: ${content} with type ${type} and time ${time}  `
       );
-     alert("time " + time);
+
       const newmessage = await new messagemodel({
         senderId,
         receiverId,
         content,
         type,
-        Time:time
+        time
       }).save();
 
       // send to receiver
@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
         receiverId,
         content,
         type,
-        Time:time
+        time
       });
 
       // confirmation to sender
@@ -88,7 +88,7 @@ io.on("connection", (socket) => {
         receiverId,
         content,
         type,
-        Time:time
+        time: new Date(),
       });
 
       console.log("📩 Message saved & sent");

@@ -19,10 +19,6 @@ const messageSchema =new mongoose.Schema({
       enum: ['text', 'image'],
       default: 'text',
     },
-    Time: {
-      type: String,
-      required: true,
-    }
 },{timestamps:true});
 
  const Message=mongoose.model('message',messageSchema);
