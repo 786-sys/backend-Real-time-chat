@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
         receiverId,
         content,
         type,
-        time
+        time: new Date(),
       });
 
       // confirmation to sender
