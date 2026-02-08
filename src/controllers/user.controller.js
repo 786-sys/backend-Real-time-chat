@@ -21,7 +21,7 @@ const registerUser = asynchandler(async (req, res) => {
       if ([fullname, email, password, description].some((field) => field?.trim() === "")) {
          throw new Error("All fields are required or Compulsory")
       }
-
+      
       const existemail = await usermodel.findOne({ email });
       console.log("hello");
 
