@@ -130,7 +130,8 @@ io.on("connection", (socket) => {
 ConnectDB()
   .then(() => {
     server.listen(process.env.PORT, () => {
-      console.log(`⚙️ Server running at port: ${process.env.PORT || 5000}`);
+      console.log(`⚙️ Server running at port: ${process.env.PORT}/api/v1/User`);
+      console.log(`http://localhost:${process.env.PORT || 5000}/api/v1/User`);
     });
   })
   .catch((err) => {
