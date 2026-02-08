@@ -24,11 +24,13 @@ const Imageinchat=asynchandler(async(req,res)=>{
            return res.status(401).json({ message: "Unauthorized user in updateProfile" })
         }
         const avatarlocalpath = req.files?.image?.[0]?.path || "";
+        const videolocalpath=req.files?.video?.[0]?.path || "";
         console.log("local path " + avatarlocalpath);
-        if (!avatarlocalpath) {
-           return res.status(500).json({ message: "image not have a Path yet" })
+        if (!avatarlocalpath && !videolocalpath) {
+           return res.status(500).json({ message: "image or video not have a Path yet" })
         }
-        const avatarres = await uploadOnCLoudinary(avatarlocalpath);
+        let FILE=avatarlocalpath || videolocalpath;
+        const avatarres = await uploadOnCLoudinary(FILE);
         if (!avatarres) {
            return res.status(500).json({ message: "Avatar respinse from cloudinary not came" })
         }

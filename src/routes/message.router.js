@@ -4,9 +4,14 @@ import { DisplayMessages ,Imageinchat} from '../controllers/message.controller.j
 import { upload } from '../middlewares/multer.middleware.js';
 const messageRouter=express.Router();
 messageRouter.route('/display/:senderId/:receiverId').get(VerifyJwt,DisplayMessages);
+
 messageRouter.route('/imageupload').post(VerifyJwt,upload.fields([
     {
-        name:"image",
+        name:`image`,
+        maxCount:1
+    },
+    {
+        name:`video`,
         maxCount:1
     }
 ]),Imageinchat) ;
