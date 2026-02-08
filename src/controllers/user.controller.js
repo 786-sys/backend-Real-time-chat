@@ -1,8 +1,7 @@
 import { asynchandler } from "../utils/asynchandler.js"
 import { uploadOnCLoudinary } from "../utils/cloudinary.js"
 import usermodel from "../models/user.model.js"
-import {sendLoginEmail} from "../utils/notification.js"
-
+import { sendLoginEmail } from "../utils/notification.js";
 const generateRefreshAccessToken = async (user_id) => {
    const user = await usermodel.findById(user_id);
    if (!user) throw newError("user not found");
@@ -90,7 +89,11 @@ const Loginuser = asynchandler(async (req, res) => {
          secure: true
       }
       const senduser = await usermodel.findById(existuser?._id).select("-password -refereshToken");
-      // await sendLoginEmail(existuser.email);
+      const sendmail=await sendLoginEmail(existuser.email);
+      if(sendmail){
+         console.log("Login notification email sent successfully");
+      }
+
       console.log("access and refresh "+accessToken, refreshToken);
       return res.status(200)
          .cookie("refreshToken", refreshToken, options)
