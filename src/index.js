@@ -17,10 +17,10 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-        "http://localhost:5173",                 // local frontend
-        "https://frontend-real-time-chat.onrender.com" // deployed frontend
+      "http://localhost:5173",                 // local frontend
+      "https://frontend-real-time-chat.onrender.com" // deployed frontend
     ], // frontend
-    methods: ["GET", "POST","PUT","DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
 });
@@ -47,7 +47,6 @@ io.on("connection", (socket) => {
       io.emit("online-users", Array.from(onlineUsers));
 
       console.log(`🟢 User ${userId} is ONLINE`);
-
       await usermodel.findByIdAndUpdate(userId, {
         socketId: socket.id,
       });
@@ -57,29 +56,19 @@ io.on("connection", (socket) => {
   });
 
   // 2️⃣ Send message
-  socket.on("send_message", async ({ senderId, receiverId, content ,type,time}) => {
+  socket.on("send_message", async ({ senderId, receiverId, content, type, time }) => {
     try {
       console.log(
         `📩 Message from ${senderId} to ${receiverId}: ${content} with type ${type} and time ${time}  `
       );
-
       const newmessage = await new messagemodel({
         senderId,
         receiverId,
         content,
         type,
+        status: 'sent',
         time
       }).save();
-
-      // send to receiver
-      io.to(receiverId).emit("receive_message", {
-        id: newmessage._id,
-        senderId,
-        receiverId,
-        content,
-        type,
-        time: new Date(),
-      });
 
       // confirmation to sender
       io.to(senderId).emit("message_sent_confirmation", {
@@ -88,19 +77,39 @@ io.on("connection", (socket) => {
         receiverId,
         content,
         type,
+        status: 'sent',
         time: new Date(),
       });
+      // send to receiver
+      const receiveronline = onlineUsers.has(receiverId);
+      if (receiveronline) {
 
+        await messagemodel.findByIdAndUpdate(newmessage._id, {
+          status: 'delivered'
+        })
+
+        io.to(receiverId).emit("receive_message", {
+          id: newmessage._id,
+          senderId,
+          receiverId,
+          content,
+          type,
+          status: 'delivered',
+        });
+      }
+
+      // status: 'sent',
       console.log("📩 Message saved & sent");
     } catch (err) {
       console.error("Error sending message:", err);
     }
   });
-
   socket.on("typing", ({ senderId, receiverId }) => {
     socket.to(receiverId).emit("user_typing", { senderId });
   });
-
+  // socket.on("read_msg",async({senderId,receiverId}) =>{
+  //     socket.to(receiverId).emit("read_msg",{senderId})
+  // })
   // user stopped typing
   socket.on("stop_typing", ({ senderId, receiverId }) => {
     socket.to(receiverId).emit("user_stop_typing", { senderId });
@@ -110,6 +119,8 @@ io.on("connection", (socket) => {
   socket.on("is-user-online", (userId, callback) => {
     callback(onlineUsers.has(userId));
   });
+
+  // socket.on("read_msg",async({senderId,receiverId})=>{)
 
   // 4️⃣ Handle disconnect
   socket.on("disconnect", () => {

@@ -139,6 +139,7 @@ const UpdateProfile = asynchandler(async (req, res) => {
       if (!user) {
          return res.status(401).json({ message: "Unauthorized user in updateProfile" })
       }
+
       const {description}=req.body;
       console.log(description);
       console.log("iam in bacekdn update rprile");
@@ -147,6 +148,7 @@ const UpdateProfile = asynchandler(async (req, res) => {
       if (!avatarlocalpath) {
          return res.status(500).json({ message: "Avatar not have a Path yet" })
       }
+      
       const avatarres = await uploadOnCLoudinary(avatarlocalpath);
       if (!avatarres) {
          return res.status(500).json({ message: "Avatar respinse from cloudinary not came" })
@@ -161,6 +163,7 @@ const UpdateProfile = asynchandler(async (req, res) => {
       console.log(error)
    }
 })
+
 const DisplayList=asynchandler(async(req,res)=>{
  try{
      const user=req?.user;

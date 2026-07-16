@@ -82,7 +82,5 @@ userSchema.methods.generateRefreshToken= async function (){
         expiresIn: process.env.expiryrefresh
     }
 )}   
-
-
 const user = mongoose.model("user", userSchema);
 export default user;

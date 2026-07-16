@@ -19,6 +19,10 @@ const messageSchema =new mongoose.Schema({
       enum: ['text', 'image','video'],
       default: 'text',
     },
+    read:{
+      type:Boolean,
+      default:false
+    }
 },{timestamps:true});
 
  const Message=mongoose.model('message',messageSchema);
