@@ -64,7 +64,7 @@ const mark_as_read=asynchandler(async(req,res)=>{
          { $set: { read: true } }
       );
       console.log(`${result.modifiedCount} messages marked as read`);
-      return res.status(200).json({message:"Messages marked as read successfully"});
+      return res.status(200).json({message:"Messages marked as read successfully", modifiedCount: result.modifiedCount});
    }catch(err){
       console.log("error in marking as read "+err);
       return res.status(500).json({message:"Internal server error while marking messages as read"});
